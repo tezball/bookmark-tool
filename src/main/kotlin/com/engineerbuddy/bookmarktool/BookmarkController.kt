@@ -6,7 +6,11 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class BookmarkController {
+class BookmarkController(
+    private val bookmarkRepo: BookmarkRepo
+) {
+
+
 
     @GetMapping("/bookmarks")
     fun bookmarks(): List<Bookmark> {
@@ -20,6 +24,8 @@ class BookmarkController {
 
     @PostMapping("/bookmark")
     fun createBookmark(@RequestBody bookmark: Bookmark) : Bookmark {
+        val entity = BookmarkEntity(0, bookmark.link, bookmark.name)
+        bookmarkRepo.save(entity)
         return bookmark
     }
 }
